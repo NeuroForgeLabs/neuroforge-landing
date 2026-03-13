@@ -1,120 +1,114 @@
-import SectionLabel from "./SectionLabel";
+"use client";
+
+const MONO = "var(--font-jetbrains, ui-monospace, 'JetBrains Mono', monospace)";
+
+const layers = [
+  {
+    n: "01", title: "Deterministic Core",
+    desc: "Static analysis, rule engines, AST parsing. Guaranteed, reproducible, auditable outcomes every time.",
+    color: "#60a5fa",
+    codes: ["static_analysis()", "rule_engine.eval()", "ast.parse()"],
+    codeBg: "rgba(59,126,248,0.08)", codeBorder: "rgba(59,126,248,0.18)", codeColor: "#60a5fa",
+  },
+  {
+    n: "02", title: "AI Explanation Layer",
+    desc: "LLM-powered natural language summaries, semantic search, context-aware suggestions on top.",
+    color: "#a78bfa",
+    codes: ["llm.explain(result)", "embed.search(query)", "ctx.window(4096)"],
+    codeBg: "rgba(124,90,243,0.08)", codeBorder: "rgba(124,90,243,0.18)", codeColor: "#a78bfa",
+  },
+  {
+    n: "03", title: "Trustworthy Output",
+    desc: "Explainable findings with auditable traces. Engineers act on results with full confidence.",
+    color: "#22d3ee",
+    codes: ["audit.trace()", "explain.why()", "verify.result()"],
+    codeBg: "rgba(34,211,238,0.06)", codeBorder: "rgba(34,211,238,0.15)", codeColor: "#22d3ee",
+  },
+];
 
 export default function Philosophy() {
   return (
-    <section id="philosophy" className="relative py-28 px-6 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(167,139,250,0.05),transparent)]" />
+    <section id="philosophy" className="relative py-24 overflow-hidden">
+      <div className="absolute inset-0" style={{
+        background: "radial-gradient(ellipse 55% 55% at 100% 50%, rgba(124,90,243,0.05), transparent)",
+      }} />
 
-      {/* Horizontal lines decoration */}
-      <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-gradient-to-r from-transparent via-purple-500/10 to-transparent" />
+      <div className="relative w-full max-w-5xl mx-auto px-6">
 
-      <div className="max-w-5xl mx-auto relative">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <SectionLabel>Design Philosophy</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-5">
-            AI assists. Logic decides.
+        {/* Full-width headline */}
+        <div className="mb-16 pb-12" style={{ borderBottom: "1px solid var(--border)" }}>
+          <p style={{ fontFamily: MONO, fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#60a5fa", marginBottom: "20px" }}>
+            /// design_philosophy
+          </p>
+          <h2 className="font-extrabold" style={{
+            fontSize: "clamp(3rem, 7.5vw, 6rem)",
+            lineHeight: 0.95,
+            letterSpacing: "-0.04em",
+          }}>
+            AI <span className="nfl-grad">assists.</span><br />
+            <span style={{ color: "#a78bfa" }}>Logic decides.</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            We believe AI should{" "}
-            <span className="text-slate-200 font-medium">augment</span>{" "}
-            engineering workflows — not replace the deterministic systems that
-            guarantee correctness.
-          </p>
         </div>
 
-        {/* Architecture diagram */}
-        <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 mb-20">
-          {/* Block 1 */}
-          <div className="relative group w-full md:w-64">
-            <div className="rounded-2xl border border-blue-500/20 bg-blue-500/[0.06] p-7 text-center card-glow">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-blue-400">
-                  <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <h3 className="font-bold text-white mb-2">Deterministic Analysis</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Rule-based, reproducible, auditable. Guaranteed outcomes for critical systems.
+        {/* Two-column */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+          {/* Left */}
+          <div>
+            <p className="text-base mb-7" style={{ color: "#94a3b8", lineHeight: 1.8, maxWidth: "44ch" }}>
+              Every tool we build rests on one conviction:{" "}
+              <span style={{ color: "#60a5fa" }}>deterministic systems make guarantees</span>.
+              AI cannot. When you need a reproducible, auditable answer, rules beat reasoning.
+            </p>
+            <p className="text-base mb-10" style={{ color: "#94a3b8", lineHeight: 1.8, maxWidth: "44ch" }}>
+              AI belongs in the{" "}
+              <span style={{ color: "#a78bfa" }}>explanation layer</span> — translating results into natural language, surfacing semantic context, suggesting next steps. Not computing the answer itself.
+            </p>
+
+            {/* Pull quote */}
+            <div className="pl-5 py-1" style={{ borderLeft: "2px solid #a78bfa" }}>
+              <p className="text-sm italic" style={{ color: "#c8cdd8", lineHeight: 1.7 }}>
+                &ldquo;AI should assist engineering, not replace deterministic systems.&rdquo;
               </p>
-              <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
-                {["Static Analysis", "Rule Engines", "AST Parsing"].map((t) => (
-                  <span key={t} className="tag-pill bg-blue-500/10 text-blue-400 border border-blue-500/15">{t}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Plus connector */}
-          <div className="flex flex-col items-center gap-1 md:mx-6 z-10">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-sm">
-              <span className="text-slate-300 font-light text-xl">+</span>
-            </div>
-            <div className="hidden md:block w-12 h-px bg-gradient-to-r from-blue-500/30 to-purple-500/30" />
-          </div>
-
-          {/* Block 2 */}
-          <div className="relative group w-full md:w-64">
-            <div className="rounded-2xl border border-purple-500/20 bg-purple-500/[0.06] p-7 text-center card-glow">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-purple-400">
-                  <path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 01-1 1H9a1 1 0 01-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M9 21h6M10 17v4M14 17v4" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <h3 className="font-bold text-white mb-2">AI Explanation Layer</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Natural language insights, semantic context, and intelligent suggestions.
+              <p style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#a78bfa", marginTop: "8px" }}>
+                — Core Design Principle
               </p>
-              <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
-                {["LLM Reasoning", "Context Window", "Semantic Search"].map((t) => (
-                  <span key={t} className="tag-pill bg-purple-500/10 text-purple-400 border border-purple-500/15">{t}</span>
-                ))}
-              </div>
             </div>
           </div>
 
-          {/* Equals connector */}
-          <div className="flex flex-col items-center gap-1 md:mx-6 z-10">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-sm">
-              <span className="text-slate-300 font-light text-xl">=</span>
-            </div>
-            <div className="hidden md:block w-12 h-px bg-gradient-to-r from-purple-500/30 to-cyan-500/30" />
-          </div>
-
-          {/* Result */}
-          <div className="relative group w-full md:w-64">
-            <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/[0.08] to-blue-500/[0.04] p-7 text-center card-glow">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-4">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan-400">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" strokeLinecap="round"/>
-                </svg>
+          {/* Right: Layer cards */}
+          <div className="flex flex-col gap-3">
+            {layers.map((item) => (
+              <div key={item.n} className="rounded-xl p-5 transition-all duration-200"
+                style={{ border: "1px solid var(--border)", background: "transparent" }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "var(--bg-raised)";
+                  el.style.borderColor = "var(--border-hi)";
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "transparent";
+                  el.style.borderColor = "var(--border)";
+                }}
+              >
+                <div className="flex items-center gap-3 mb-2.5">
+                  <span style={{ fontFamily: MONO, fontSize: "0.6rem", letterSpacing: "0.1em", color: item.color }}>{item.n}</span>
+                  <h3 className="text-sm font-semibold" style={{ color: item.codeColor }}>{item.title}</h3>
+                </div>
+                <p className="text-sm mb-3" style={{ color: "#94a3b8", lineHeight: 1.65 }}>{item.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {item.codes.map((c) => (
+                    <code key={c} className="text-xs px-2 py-0.5 rounded" style={{
+                      fontFamily: MONO,
+                      background: item.codeBg,
+                      color: item.codeColor,
+                      border: `1px solid ${item.codeBorder}`,
+                    }}>{c}</code>
+                  ))}
+                </div>
               </div>
-              <h3 className="font-bold text-white mb-2">Trustworthy Intelligence</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Explainable, verifiable results that engineers can trust and act on.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
-                {["Explainable", "Auditable", "Reliable"].map((t) => (
-                  <span key={t} className="tag-pill bg-cyan-500/10 text-cyan-400 border border-cyan-500/15">{t}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Quote block */}
-        <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 text-center max-w-3xl mx-auto overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
-          <p className="text-xl md:text-2xl font-medium text-slate-200 leading-relaxed italic">
-            &ldquo;AI should assist engineering, not replace deterministic systems.&rdquo;
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-2">
-            <div className="w-6 h-px bg-slate-600" />
-            <span className="text-sm text-slate-500">NeuroForgeLabs Design Principle</span>
-            <div className="w-6 h-px bg-slate-600" />
+            ))}
           </div>
         </div>
       </div>

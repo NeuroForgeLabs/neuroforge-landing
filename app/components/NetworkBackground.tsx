@@ -8,92 +8,70 @@ export default function NetworkBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationId: number;
-    let width = 0;
-    let height = 0;
+    let animId: number;
+    let W = 0, H = 0;
 
-    const nodes: {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      opacity: number;
-    }[] = [];
+    type Node = { x: number; y: number; vx: number; vy: number; r: number; opacity: number };
+    const nodes: Node[] = [];
 
-    const NODE_COUNT = 55;
-    const CONNECTION_DISTANCE = 160;
+    const COUNT = 40;
+    const MAX_DIST = 140;
 
     const resize = () => {
-      width = canvas.width = canvas.offsetWidth;
-      height = canvas.height = canvas.offsetHeight;
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
     };
 
     const init = () => {
       nodes.length = 0;
-      for (let i = 0; i < NODE_COUNT; i++) {
+      for (let i = 0; i < COUNT; i++) {
         nodes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          radius: Math.random() * 1.5 + 0.5,
-          opacity: Math.random() * 0.5 + 0.2,
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          r: Math.random() * 1.2 + 0.4,
+          opacity: Math.random() * 0.35 + 0.1,
         });
       }
     };
 
     const draw = () => {
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, W, H);
 
-      // Update and draw nodes
-      for (const node of nodes) {
-        node.x += node.vx;
-        node.y += node.vy;
-
-        if (node.x < 0 || node.x > width) node.vx *= -1;
-        if (node.y < 0 || node.y > height) node.vy *= -1;
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
 
         ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(96, 165, 250, ${node.opacity})`;
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(59, 126, 248, ${n.opacity})`;
         ctx.fill();
       }
 
-      // Draw connections
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < CONNECTION_DISTANCE) {
-            const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.15;
-            const gradient = ctx.createLinearGradient(
-              nodes[i].x,
-              nodes[i].y,
-              nodes[j].x,
-              nodes[j].y
-            );
-            gradient.addColorStop(0, `rgba(96, 165, 250, ${alpha})`);
-            gradient.addColorStop(0.5, `rgba(167, 139, 250, ${alpha * 0.8})`);
-            gradient.addColorStop(1, `rgba(96, 165, 250, ${alpha})`);
-
+          const d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < MAX_DIST) {
+            const alpha = (1 - d / MAX_DIST) * 0.08;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(59, 126, 248, ${alpha})`;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
       }
 
-      animationId = requestAnimationFrame(draw);
+      animId = requestAnimationFrame(draw);
     };
 
     const observer = new ResizeObserver(resize);
@@ -103,7 +81,7 @@ export default function NetworkBackground() {
     draw();
 
     return () => {
-      cancelAnimationFrame(animationId);
+      cancelAnimationFrame(animId);
       observer.disconnect();
     };
   }, []);
@@ -112,7 +90,7 @@ export default function NetworkBackground() {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.5 }}
     />
   );
 }
